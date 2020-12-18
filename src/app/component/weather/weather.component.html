@@ -1,0 +1,65 @@
+<div>
+  <div class="container">
+    <div class="weather-side">
+      <div class="date-container">
+        <h2 class="date-dayname">Weather Report</h2><span
+          class="date-day">{{(weatherForecastData?.list[0]?.dt)*1000 | date: 'fullDate'}}</span>
+        <h2 class="location">{{weatherForecastData?.city?.name}}</h2><br><span>Sun Rises at :
+          {{sunRise*1000 | date: 'shortTime'}}</span><br><span>Sun sets at :
+            {{sunSet*1000 | date: 'shortTime'}}</span>
+      </div>
+      <div class="weather-container">
+        <h1 class="weather-temp">{{weatherForecastData?.list[0]?.main?.temp}}°C</h1>
+        <h3 class="weather-desc">{{weatherForecastData?.list[0]?.weather[0]?.main}}</h3>
+      </div>
+    </div>
+    <div class="info-side">
+      <div class="location-container">
+        <input class="form-control" [(ngModel)]="location" placeholder="Enter location" />
+        <button class="form-control location-button" (click)="onSubmit(location)"><span>Search location</span></button>
+        <div *ngIf="errorMessage">{{errorMessage}}</div>
+      </div>
+      <div class="week-container">
+        <label class="label-chart">Or select any from below Europian cities</label>
+        <ul class="week-list">
+          <li (click)="cityDetails('Madrid')"><span class="day-name">Madrid</span></li>
+          <li (click)="cityDetails('Barcelona')"><span class="day-name">Barcelona</span></li>
+          <li (click)="cityDetails('Munich')"><span class="day-name">Munich</span></li>
+          <li (click)="cityDetails('Milan')"><span class="day-name">Milan</span></li>
+          <li (click)="cityDetails('Seville')"><span class="day-name">Seville</span></li>
+          <div class="clear"></div>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="chart">
+    <label class="chart-label">Below table depicts sea level in the next 5 days at 9:00 AM (m MSL) for {{weatherForecastData?.city?.name}}</label>
+    <div class="table-weather">
+      <table border="1">
+        <tr class="table-header">
+          <th >Place</th>
+          <th >{{day1}}</th>
+          <th>{{day2}}</th>
+          <th >{{day3}}</th>
+          <th >{{day4}}</th>
+          <th >{{day5}}</th>
+        </tr>
+        <tr class="table-body">
+          <th >{{weatherForecastData?.city?.name}}</th>
+          <td>{{weatherForecastData?.list[0]?.main?.sea_level}}</td>
+          <td>{{weatherForecastData?.list[8]?.main?.sea_level}}</td>
+          <td>{{weatherForecastData?.list[16]?.main?.sea_level}}</td>
+          <td>{{weatherForecastData?.list[24]?.main?.sea_level}}</td>
+          <td>{{weatherForecastData?.list[32]?.main?.sea_level}}</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <div class="chart-container">
+      <label class="chart-label">Below chart depicts Highest and Lowest Temperatures for {{weatherForecastData?.city?.name}} :</label>
+      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+        [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+    </div>
+  </div>
+</div>
